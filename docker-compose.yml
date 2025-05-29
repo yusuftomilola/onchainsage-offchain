@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # Backend API Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: onchainsage-api
+    restart: unless-stopped
+    ports:
+      - '${PORT:-3000}:3000'
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/onchainsage_db
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - onchainsage-network
+    command: npm run start:dev
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: onchainsage-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: onchainsage_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - onchainsage-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: onchainsage-redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - onchainsage-network
+    command: redis-server --appendonly yes
+
+  # PostgreSQL Admin (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: onchainsage-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@onchainsage.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - '8080:80'
+    depends_on:
+      - postgres
+    networks:
+      - onchainsage-network
+    profiles:
+      - admin
+
+  # Redis Commander (optional)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: onchainsage-redis-commander
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    ports:
+      - '8081:8081'
+    depends_on:
+      - redis
+    networks:
+      - onchainsage-network
+    profiles:
+      - admin
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  onchainsage-network:
+    driver: bridge
