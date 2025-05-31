@@ -24,6 +24,7 @@ import { CommunityModule } from '@modules/community/community.module';
 import { NotificationsModule } from '@modules/notifications/notifications.module';
 import { HealthModule } from '@modules/health/health.module';
 import { ReputationModule } from './modules/reputation/reputation.module';
+import { TokenDataModule } from './token-data/token-data.module';
 
 @Module({
   imports: [
@@ -105,6 +106,7 @@ import { ReputationModule } from './modules/reputation/reputation.module';
     CommunityModule,
     NotificationsModule,
     ReputationModule,
+    TokenDataModule,
   ],
   controllers: [AppController],
   providers: [AppService],
