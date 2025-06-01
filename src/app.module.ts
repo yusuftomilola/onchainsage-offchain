@@ -21,12 +21,13 @@ import { TradingModule } from '@modules/trading/trading.module';
 import { DataIngestionModule } from '@modules/data-ingestion/data-ingestion.module';
 import { AiProcessingModule } from '@modules/ai-processing/ai-processing.module';
 import { CommunityModule } from '@modules/community/community.module';
-import { NotificationsModule } from '@modules/notifications/notifications.module';
+import { NotificationModule } from '@modules/notifications/notifications.module';
 import { HealthModule } from '@modules/health/health.module';
 import { ReputationModule } from './modules/reputation/reputation.module';
 import { UsersModule } from './modules/users/users.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 
+import { TokenDataModule } from './token-data/token-data.module';
 
 @Module({
   imports: [
@@ -108,10 +109,9 @@ import { RedisModule } from '@nestjs-modules/ioredis';
     DataIngestionModule,
     AiProcessingModule,
     CommunityModule,
-    NotificationsModule,
+    NotificationModule,
     ReputationModule,
-    UsersModule,
-    // RedisModule
+    TokenDataModule,
   ],
   controllers: [AppController],
   providers: [AppService],

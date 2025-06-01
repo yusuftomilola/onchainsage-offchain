@@ -4,6 +4,12 @@ import { UpdateNotificationDto } from '../dto/update-notification.dto';
 
 @Injectable()
 export class NotificationsService {
+  getUserNotifications(userId: any, page: number, limit: number) {
+    throw new Error('Method not implemented.');
+  }
+  markAllAsRead(_userId: any, userId: any) {
+    throw new Error('Method not implemented.');
+  }
   create(createNotificationDto: CreateNotificationDto) {
     return 'This action adds a new notification';
   }
