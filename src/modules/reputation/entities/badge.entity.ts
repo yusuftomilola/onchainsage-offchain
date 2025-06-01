@@ -14,6 +14,9 @@ export class Badge {
   @Column()
   earnedAt!: Date;
 
-  @Column({ nullable: true })
-  revokedAt?: Date | null;
+  // @Column({ nullable: true })
+  // revokedAt?: Date | null;
+  @Column({ type: 'timestamp', nullable: true })
+revokedAt?: Date; // ✅ Correct
+
 }

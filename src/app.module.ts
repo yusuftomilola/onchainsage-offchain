@@ -24,6 +24,9 @@ import { CommunityModule } from '@modules/community/community.module';
 import { NotificationsModule } from '@modules/notifications/notifications.module';
 import { HealthModule } from '@modules/health/health.module';
 import { ReputationModule } from './modules/reputation/reputation.module';
+import { UsersModule } from './modules/users/users.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
+
 
 @Module({
   imports: [
@@ -93,6 +96,8 @@ import { ReputationModule } from './modules/reputation/reputation.module';
       inject: [ConfigService],
     }),
 
+   
+
     // Task Scheduling
     ScheduleModule.forRoot(),
 
@@ -105,6 +110,8 @@ import { ReputationModule } from './modules/reputation/reputation.module';
     CommunityModule,
     NotificationsModule,
     ReputationModule,
+    UsersModule,
+    // RedisModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,26 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from '../dto/create-auth.dto';
-import { UpdateAuthDto } from '../dto/update-auth.dto';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UsersService } from '@/modules/users/services/users.service';
+import { WalletVerificationService } from './wallet-verification.service';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(
+    private jwtService: JwtService,
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+    private usersService: UsersService,
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    private walletVerifier: WalletVerificationService,
+  ) {}
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+  public async loginWithWallet({
+    walletAddress,
+    signature,
+    message,
+  }: {
+    walletAddress: string;
+    signature: any;
+    message: string;
+  }) {
+    const isValid = await this.walletVerifier.verifySignature(walletAddress, message, signature);
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    // Auto-create user if not exists
+    const user = await this.usersService.findOrCreate(walletAddress);
+
+    const payload = { sub: user.id, walletAddress };
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
   }
 }
