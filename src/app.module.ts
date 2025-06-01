@@ -5,7 +5,6 @@ import { BullModule } from '@nestjs/bull';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { WinstonModule } from 'nest-winston';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -21,10 +20,15 @@ import { TradingModule } from '@modules/trading/trading.module';
 import { DataIngestionModule } from '@modules/data-ingestion/data-ingestion.module';
 import { AiProcessingModule } from '@modules/ai-processing/ai-processing.module';
 import { CommunityModule } from '@modules/community/community.module';
-import { NotificationsModule } from '@modules/notifications/notifications.module';
 import { HealthModule } from '@modules/health/health.module';
 import { ReputationModule } from './modules/reputation/reputation.module';
 import { TokenDataModule } from './token-data/token-data.module';
+import { UserModule } from './user/user.module';
+import { TradingSignalModule } from './trading-signal/trading-signal.module';
+import { CommunityPostModule } from './community-post/community-post.module';
+import { PerformanceTrackingModule } from './performance-tracking/performance-tracking.module';
+import { VoteModule } from './vote/vote.module';
+import { NotificationModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -53,7 +57,9 @@ import { TokenDataModule } from './token-data/token-data.module';
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        ssl: configService.get<boolean>('DATABASE_SSL', false) ? { rejectUnauthorized: false } : false,
+        ssl: configService.get<boolean>('DATABASE_SSL', false)
+          ? { rejectUnauthorized: false }
+          : false,
         synchronize: configService.get<boolean>('DATABASE_SYNCHRONIZE', false),
         logging: configService.get<boolean>('DATABASE_LOGGING', false),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
@@ -104,9 +110,14 @@ import { TokenDataModule } from './token-data/token-data.module';
     DataIngestionModule,
     AiProcessingModule,
     CommunityModule,
-    NotificationsModule,
+    NotificationModule,
     ReputationModule,
     TokenDataModule,
+    UserModule,
+    TradingSignalModule,
+    CommunityPostModule,
+    PerformanceTrackingModule,
+    VoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],

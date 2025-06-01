@@ -17,7 +17,15 @@ export const appConfig = registerAs('app', () => ({
   // CORS Configuration
   cors: {
     origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000'],
-    methods: process.env.CORS_METHODS?.split(',') || ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    methods: process.env.CORS_METHODS?.split(',') || [
+      'GET',
+      'HEAD',
+      'PUT',
+      'PATCH',
+      'POST',
+      'DELETE',
+      'OPTIONS',
+    ],
     credentials: process.env.CORS_CREDENTIALS === 'true' || true,
   },
 
