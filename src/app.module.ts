@@ -53,26 +53,32 @@ import { NotificationModule } from './modules/notifications/notifications.module
 
     // Database
     TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get<string>('DATABASE_URL'),
-        host: configService.get<string>('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
-        username: configService.get<string>('DATABASE_USERNAME'),
-        password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_NAME'),
-        ssl: configService.get<boolean>('DATABASE_SSL', false)
-          ? { rejectUnauthorized: false }
-          : false,
-        synchronize: configService.get<boolean>('DATABASE_SYNCHRONIZE', false),
-        logging: configService.get<boolean>('DATABASE_LOGGING', false),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        migrations: [__dirname + '/database/migrations/*{.ts,.js}'],
-        subscribers: [__dirname + '/**/*.subscriber{.ts,.js}'],
-        autoLoadEntities: true,
-        retryAttempts: 3,
-        retryDelay: 3000,
-      }),
+      useFactory: (configService: ConfigService) => {
+        // Get the value, which might be a string if it comes directly from .env
+        const databaseSslEnv = configService.get('DATABASE_SSL'); 
+        // Explicitly convert to boolean: true if string is 'true', false otherwise (including if 'false' or undefined)
+        const databaseSsl = databaseSslEnv === 'true' || databaseSslEnv === true;
+        console.log('DATABASE_SSL from env:', databaseSslEnv, typeof databaseSslEnv);
+        console.log('DATABASE_SSL parsed as boolean:', databaseSsl, typeof databaseSsl);
+        return {
+          type: 'postgres',
+          url: configService.get<string>('DATABASE_URL'),
+          host: configService.get<string>('DATABASE_HOST'),
+          port: configService.get<number>('DATABASE_PORT'),
+          username: configService.get<string>('DATABASE_USERNAME'),
+          password: configService.get<string>('DATABASE_PASSWORD'),
+          database: configService.get<string>('DATABASE_NAME'),
+          ssl: databaseSsl ? { rejectUnauthorized: false } : false,
+          synchronize: configService.get<boolean>('DATABASE_SYNCHRONIZE', false),
+          logging: configService.get<boolean>('DATABASE_LOGGING', false),
+          entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          migrations: [__dirname + '/database/migrations/*{.ts,.js}'],
+          subscribers: [__dirname + '/**/*.subscriber{.ts,.js}'],
+          autoLoadEntities: true,
+          retryAttempts: 3,
+          retryDelay: 3000,
+        };
+      },
       inject: [ConfigService],
     }),
 

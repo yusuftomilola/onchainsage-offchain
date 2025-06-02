@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, Unique } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '../../../user/entities/user.entity';
 import { Post } from './post.entity';
 import { Comment } from './comment.entity';
 
@@ -13,7 +13,7 @@ export class Vote {
   @Column({ type: 'enum', enum: ['up', 'down'] })
   type: 'up' | 'down' | undefined;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date | undefined;
 
   @ManyToOne(() => User, user => user.votes)

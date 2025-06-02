@@ -5,24 +5,24 @@ export class TradingCall {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column('integer')
   userId!: number;
 
-  @Column()
+  @Column('text')
   asset!: string;
 
-  @Column()
+  @Column({ type: 'enum', enum: ['buy', 'sell'] })
   callType!: 'buy' | 'sell';
 
   @Column('decimal')
   priceAtCall!: number;
 
-  @Column()
+  @Column({ type: 'timestamp with time zone' })
   timestamp!: Date;
 
-  @Column({ default: 'open' })
+  @Column({ type: 'enum', enum: ['open', 'closed'], default: 'open' })
   status!: 'open' | 'closed';
 
-  @Column({ nullable: true })
+  @Column({ type: 'enum', enum: ['win', 'loss', 'neutral'], nullable: true })
   outcome!: 'win' | 'loss' | 'neutral';
 }

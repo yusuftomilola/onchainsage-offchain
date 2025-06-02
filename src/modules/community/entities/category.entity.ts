@@ -6,25 +6,25 @@ export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string | undefined;
 
-  @Column({ unique: true })
+  @Column('text', { unique: true })
   name: string | undefined;
 
-  @Column()
+  @Column('text')
   description: string | undefined;
 
-  @Column()
+  @Column('text')
   slug: string | undefined;
 
-  @Column({ default: '#3B82F6' })
+  @Column('varchar', { length: 7, default: '#3B82F6' })
   color: string | undefined;
 
-  @Column({ default: true })
+  @Column('boolean', { default: true })
   isActive: boolean | undefined;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date | undefined;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date | undefined;
 
   @OneToMany(() => Post, post => post.category)
