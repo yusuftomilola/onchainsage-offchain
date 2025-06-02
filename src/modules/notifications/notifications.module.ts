@@ -14,4 +14,3 @@ import { NotificationService } from '../community/services/notification.service'
   exports: [NotificationsService, NotificationGateway],
 })
 export class NotificationModule {}
-
