@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne } from 'typeorm';
-import { User } from '../../community/entities/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from 'typeorm';
+import { User } from '../../../user/entities/user.entity';
 
 @Entity('notifications')
 export class Notification {
@@ -26,6 +26,9 @@ export class Notification {
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date | undefined;
+
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  updatedAt: Date | undefined;
 
   @ManyToOne(() => User)
   recipient: User | undefined;

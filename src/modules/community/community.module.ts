@@ -4,7 +4,7 @@ import { CommunityController } from './controller/community.controller';
 import { CommunityService } from './services/community.service';
 import { ForumController } from './controller/forum.controller';
 import { ForumService } from './services/forum.service';
-import { User } from './entities/user.entity';
+import { User } from '../../user/entities/user.entity';
 import { Post } from './entities/post.entity';
 import { Comment } from './entities/comment.entity';
 import { Vote } from './entities/vote.entity';
@@ -15,9 +15,6 @@ import { UserProfileController } from './controller/user-profile.controller';
 import { CategoryService } from './services/category.service';
 import { UserProfileService } from './services/user-profile.service';
 import { NotificationModule } from '../notifications/notifications.module';
-
-
-
 
 @Module({
     imports: [
