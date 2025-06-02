@@ -8,34 +8,34 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ unique: true })
+  @Column('text', { unique: true })
   username: string | undefined;
 
-  @Column({ unique: true })
+  @Column('text', { unique: true })
   email!: string;
 
-  @Column()
+  @Column('text')
   password!: string;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   avatar!: string;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   bio!: string;
 
-  @Column({ default: 0 })
+  @Column('integer', { default: 0 })
   reputation!: number;
 
-  @Column({ default: 'user' })
+  @Column('text', { default: 'user' })
   role!: string;
 
-  @Column({ default: true })
+  @Column('boolean', { default: true })
   isActive!: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt!: Date;
 
   @OneToMany(() => Post, post => post.author)

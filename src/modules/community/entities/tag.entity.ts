@@ -6,16 +6,16 @@ export class Tag {
   @PrimaryGeneratedColumn('uuid')
   id: string | undefined;
 
-  @Column({ unique: true })
+  @Column('text', { unique: true })
   name: string | undefined;
 
-  @Column()
+  @Column('text')
   slug: string | undefined;
 
-  @Column({ default: '#6B7280' })
+  @Column('varchar', { length: 7, default: '#6B7280' })
   color: string | undefined;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date | undefined;
 
   @ManyToMany(() => Post, post => post.tags)

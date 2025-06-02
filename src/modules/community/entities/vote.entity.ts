@@ -13,7 +13,7 @@ export class Vote {
   @Column({ type: 'enum', enum: ['up', 'down'] })
   type: 'up' | 'down' | undefined;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date | undefined;
 
   @ManyToOne(() => User, user => user.votes)

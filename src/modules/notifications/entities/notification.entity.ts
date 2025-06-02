@@ -6,25 +6,25 @@ export class Notification {
   @PrimaryGeneratedColumn('uuid')
   id: string | undefined;
 
-  @Column()
+  @Column('text')
   type: string | undefined; 
 
-  @Column()
+  @Column('text')
   title: string | undefined;
 
-  @Column()
+  @Column('text')
   message: string | undefined;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   entityId: string | undefined; 
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   entityType: string | undefined; 
 
-  @Column({ default: false })
+  @Column('boolean', { default: false })
   isRead: boolean | undefined;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date | undefined;
 
   @ManyToOne(() => User)
