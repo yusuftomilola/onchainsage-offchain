@@ -5,15 +5,15 @@ export class Badge {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column('integer')
   userId!: number;
 
-  @Column()
+  @Column('text')
   badgeName!: string;
 
-  @Column()
+  @Column({ type: 'timestamp with time zone' })
   earnedAt!: Date;
 
-  @Column({ nullable: true })
+  @Column({ type: 'timestamp with time zone', nullable: true })
   revokedAt?: Date | null;
 }

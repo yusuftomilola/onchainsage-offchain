@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, Tree, TreeParent, TreeChildren } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '../../../user/entities/user.entity';
 import { Post } from './post.entity';
 import { Vote } from './vote.entity';
 
@@ -12,22 +12,22 @@ export class Comment {
   @Column('text')
   content: string | undefined;
 
-  @Column({ default: 0 })
+  @Column('integer', { default: 0 })
   upvotes: number | undefined;
 
-  @Column({ default: 0 })
+  @Column('integer', { default: 0 })
   downvotes: number | undefined;
 
-  @Column({ default: true })
+  @Column('boolean', { default: true })
   isActive: boolean | undefined;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   moderatorNote: string | undefined;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date | undefined;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date | undefined;
 
   @ManyToOne(() => User, user => user.comments)

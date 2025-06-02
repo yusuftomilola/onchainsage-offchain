@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, ManyToMany, JoinTable, Index } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '../../../user/entities/user.entity';
 import { Category } from './category.entity';
 import { Tag } from './tag.entity';
 import { Comment } from './comment.entity';
@@ -11,37 +11,37 @@ export class Post {
   @PrimaryGeneratedColumn('uuid')
   id: string | undefined;
 
-  @Column()
+  @Column('text')
   title: string | undefined;
 
   @Column('text')
   content: string | undefined;
 
-  @Column({ default: 0 })
+  @Column('integer', { default: 0 })
   upvotes: number | undefined;
 
-  @Column({ default: 0 })
+  @Column('integer', { default: 0 })
   downvotes: number | undefined;
 
-  @Column({ default: 0 })
+  @Column('integer', { default: 0 })
   views: number | undefined;
 
-  @Column({ default: false })
+  @Column('boolean', { default: false })
   isPinned: boolean | undefined;
 
-  @Column({ default: false })
+  @Column('boolean', { default: false })
   isLocked: boolean | undefined;
 
-  @Column({ default: true })
+  @Column('boolean', { default: true })
   isActive: boolean | undefined;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   moderatorNote: string | undefined;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date | undefined;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
   updatedAt: Date | undefined;
 
   @ManyToOne(() => User, user => user.posts)

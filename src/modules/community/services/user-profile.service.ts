@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { User } from '../../../user/entities/user.entity';
 import { UpdateProfileDto } from '../dto/update-profile.dto';
 
 @Injectable()
@@ -68,21 +68,21 @@ export class UserProfileService {
       throw new NotFoundException('User not found');
     }
 
-    const postsCount = user.posts.length;
-    const commentsCount = user.comments.length;
+    const postsCount = user.posts?.length || 0;
+    const commentsCount = user.comments?.length || 0;
     
-    const totalUpvotes = user.posts.reduce((sum, post) => sum + (post.upvotes ?? 0), 0) +
-                        user.comments.reduce((sum, comment) => sum + (comment.upvotes ?? 0), 0);
+    const totalUpvotes = (user.posts || []).reduce((sum, post) => sum + (post.upvotes ?? 0), 0) +
+                        (user.comments || []).reduce((sum, comment) => sum + (comment.upvotes ?? 0), 0);
     
-    const totalDownvotes = user.posts.reduce((sum, post) => sum + (post.downvotes ?? 0), 0) +
-                          user.comments.reduce((sum, comment) => sum + (comment.downvotes ?? 0), 0);
+    const totalDownvotes = (user.posts || []).reduce((sum, post) => sum + (post.downvotes ?? 0), 0) +
+                          (user.comments || []).reduce((sum, comment) => sum + (comment.downvotes ?? 0), 0);
 
     return {
       postsCount,
       commentsCount,
       totalUpvotes,
       totalDownvotes,
-      reputation: user.reputation,
+      reputation: user.reputation ?? 0,
     };
   }
 }

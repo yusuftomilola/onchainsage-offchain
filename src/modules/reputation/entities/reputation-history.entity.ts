@@ -5,12 +5,12 @@ export class ReputationHistory {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column('integer')
   userId!: number;
 
   @Column('decimal')
   score!: number;
 
-  @Column()
+  @Column({ type: 'timestamp with time zone' })
   timestamp!: Date;
 }

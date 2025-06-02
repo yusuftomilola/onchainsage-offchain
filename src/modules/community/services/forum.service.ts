@@ -6,7 +6,7 @@ import { Comment } from '../entities/comment.entity';
 import { Vote } from '../entities/vote.entity';
 import { Category } from '../entities/category.entity';
 import { Tag } from '../entities/tag.entity';
-import { User } from '../entities/user.entity';
+import { User } from '../../../user/entities/user.entity';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { CreateCommentDto } from '../dto/create-comment.dto';
