@@ -32,7 +32,8 @@ import { TradingSignalModule } from './trading-signal/trading-signal.module';
 import { CommunityPostModule } from './community-post/community-post.module';
 import { PerformanceTrackingModule } from './performance-tracking/performance-tracking.module';
 import { VoteModule } from './vote/vote.module';
-import { NotificationModule } from './modules/notifications/notifications.module';
+import { QueueModule } from './queue/queue.module';
+import { DagService } from './workflow/workflow.service';
 
 @Module({
   imports: [
@@ -130,8 +131,9 @@ import { NotificationModule } from './modules/notifications/notifications.module
     CommunityPostModule,
     PerformanceTrackingModule,
     VoteModule,
+    QueueModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, DagService],
 })
 export class AppModule {}
