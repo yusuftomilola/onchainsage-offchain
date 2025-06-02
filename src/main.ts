@@ -111,6 +111,7 @@ async function bootstrap() {
     logger.log(`Swagger documentation available at: http://localhost:${port}/${configService.get<string>('SWAGGER_PATH', 'api/docs')}`);
   }
 
+
   // Graceful shutdown
   app.enableShutdownHooks();
 

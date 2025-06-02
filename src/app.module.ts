@@ -20,8 +20,12 @@ import { TradingModule } from '@modules/trading/trading.module';
 import { DataIngestionModule } from '@modules/data-ingestion/data-ingestion.module';
 import { AiProcessingModule } from '@modules/ai-processing/ai-processing.module';
 import { CommunityModule } from '@modules/community/community.module';
+import { NotificationModule } from '@modules/notifications/notifications.module';
 import { HealthModule } from '@modules/health/health.module';
 import { ReputationModule } from './modules/reputation/reputation.module';
+import { UsersModule } from './modules/users/users.module';
+import { RedisModule } from '@nestjs-modules/ioredis';
+
 import { TokenDataModule } from './token-data/token-data.module';
 import { UserModule } from './user/user.module';
 import { TradingSignalModule } from './trading-signal/trading-signal.module';
@@ -105,6 +109,8 @@ import { NotificationModule } from './modules/notifications/notifications.module
       ],
       inject: [ConfigService],
     }),
+
+   
 
     // Task Scheduling
     ScheduleModule.forRoot(),
