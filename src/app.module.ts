@@ -32,7 +32,11 @@ import { TradingSignalModule } from './trading-signal/trading-signal.module';
 import { CommunityPostModule } from './community-post/community-post.module';
 import { PerformanceTrackingModule } from './performance-tracking/performance-tracking.module';
 import { VoteModule } from './vote/vote.module';
-import { NotificationModule } from './modules/notifications/notifications.module';
+// import { NotificationModule } from './modules/notifications/notifications.module';
+import { SentimentModule } from './modules/sentiment/sentiment.module';
+import { SentimentService } from './modules/sentiment/sentiment.service';
+import { SentimentController } from './modules/sentiment/sentiment.controller';
+
 
 @Module({
   imports: [
@@ -130,8 +134,10 @@ import { NotificationModule } from './modules/notifications/notifications.module
     CommunityPostModule,
     PerformanceTrackingModule,
     VoteModule,
+    SentimentModule,
+    
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, SentimentController],
+  providers: [AppService, SentimentService],
 })
 export class AppModule {}
