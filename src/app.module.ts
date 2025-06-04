@@ -34,6 +34,8 @@ import { PerformanceTrackingModule } from './performance-tracking/performance-tr
 import { VoteModule } from './vote/vote.module';
 import { QueueModule } from './queue/queue.module';
 import { DagService } from './workflow/workflow.service';
+import { TwitterModule } from './modules/twitter/twitter.module';
+import { JobModule } from './modules/job/job.module';
 
 @Module({
   imports: [
@@ -132,6 +134,8 @@ import { DagService } from './workflow/workflow.service';
     PerformanceTrackingModule,
     VoteModule,
     QueueModule,
+     TwitterModule,
+    JobModule,
   ],
   controllers: [AppController],
   providers: [AppService, DagService],
