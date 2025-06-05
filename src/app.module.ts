@@ -34,7 +34,9 @@ import { PerformanceTrackingModule } from './performance-tracking/performance-tr
 import { VoteModule } from './vote/vote.module';
 import { QueueModule } from './queue/queue.module';
 import { DagService } from './workflow/workflow.service';
+
 import { PriceAggregationModule } from './modules/price-aggregation/price-aggregation.module';
+import { AnalyticsModule } from './analytics/analytics.module'; // Added AnalyticsModule
 
 @Module({
   imports: [
@@ -134,6 +136,7 @@ import { PriceAggregationModule } from './modules/price-aggregation/price-aggreg
     VoteModule,
     QueueModule,
     PriceAggregationModule,
+    AnalyticsModule, // Added AnalyticsModule
   ],
   controllers: [AppController],
   providers: [AppService, DagService],
