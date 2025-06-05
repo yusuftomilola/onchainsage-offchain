@@ -36,7 +36,9 @@ import { VoteModule } from './vote/vote.module';
 import { SentimentModule } from './modules/sentiment/sentiment.module';
 import { SentimentService } from './modules/sentiment/sentiment.service';
 import { SentimentController } from './modules/sentiment/sentiment.controller';
-
+import { QueueModule } from './queue/queue.module';
+import { DagService } from './workflow/workflow.service';
+import { AnalyticsModule } from './analytics/analytics.module'; // Added AnalyticsModule
 
 @Module({
   imports: [
@@ -139,5 +141,10 @@ import { SentimentController } from './modules/sentiment/sentiment.controller';
   ],
   controllers: [AppController, SentimentController],
   providers: [AppService, SentimentService],
+    QueueModule,
+    AnalyticsModule, // Added AnalyticsModule
+  ],
+  controllers: [AppController],
+  providers: [AppService, DagService],
 })
 export class AppModule {}
