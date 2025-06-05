@@ -32,10 +32,17 @@ import { TradingSignalModule } from './trading-signal/trading-signal.module';
 import { CommunityPostModule } from './community-post/community-post.module';
 import { PerformanceTrackingModule } from './performance-tracking/performance-tracking.module';
 import { VoteModule } from './vote/vote.module';
+// import { NotificationModule } from './modules/notifications/notifications.module';
+import { SentimentModule } from './modules/sentiment/sentiment.module';
+import { SentimentService } from './modules/sentiment/sentiment.service';
+import { SentimentController } from './modules/sentiment/sentiment.controller';
 import { QueueModule } from './queue/queue.module';
 import { DagService } from './workflow/workflow.service';
 import { TwitterModule } from './modules/twitter/twitter.module';
 import { JobModule } from './modules/job/job.module';
+
+import { PriceAggregationModule } from './modules/price-aggregation/price-aggregation.module';
+import { AnalyticsModule } from './analytics/analytics.module'; // Added AnalyticsModule
 
 @Module({
   imports: [
@@ -133,9 +140,16 @@ import { JobModule } from './modules/job/job.module';
     CommunityPostModule,
     PerformanceTrackingModule,
     VoteModule,
+    SentimentModule,
+    
+  ],
+  controllers: [AppController, SentimentController],
+  providers: [AppService, SentimentService],
     QueueModule,
      TwitterModule,
     JobModule,
+    PriceAggregationModule,
+    AnalyticsModule, // Added AnalyticsModule
   ],
   controllers: [AppController],
   providers: [AppService, DagService],
