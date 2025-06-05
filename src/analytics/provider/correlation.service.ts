@@ -5,7 +5,7 @@ import { TokenPerformance } from '../entities/token-performance.entity';
 import { MarketSentiment } from '../entities/market-sentiment.entity';
 import { AnalyticsCacheService } from './analytics-cache.service';
 
-interface CorrelationResult {
+export interface CorrelationResult {
   tokenA?: string;
   tokenB?: string;
   tokenAddress?: string;

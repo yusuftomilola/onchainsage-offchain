@@ -19,7 +19,7 @@ export class AnalyticsCacheService {
       if (value) {
         this.logger.debug(`Cache HIT for key: ${key}`);
       }
-      return value;
+      return value === null ? undefined : value;
     } catch (error) {
       this.logger.error(`Error getting from cache for key ${key}:`, error);
       return undefined;
@@ -58,15 +58,5 @@ export class AnalyticsCacheService {
     }
   }
 
-  /**
-   * Clear the entire cache. Use with caution.
-   */
-  async reset(): Promise<void> {
-    try {
-      await this.cacheManager.reset();
-      this.logger.log('Cache RESET successfully');
-    } catch (error) {
-      this.logger.error('Error resetting cache:', error);
-    }
-  }
+
 }

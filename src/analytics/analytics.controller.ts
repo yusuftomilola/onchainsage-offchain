@@ -1,16 +1,16 @@
-import { Controller, Get, Query, Param, UseInterceptors, CacheInterceptor, CacheTTL } from '@nestjs/common';
+import { Controller, Get, Query, Param } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { AnalyticsService } from './provider/analytics.service';
 import { TokenPerformanceService } from './provider/token-performance.service';
 import { MarketSentimentService } from './provider/market-sentiment.service';
-import { CorrelationService } from './provider/correlation.service';
+import { CorrelationService, CorrelationResult } from './provider/correlation.service';
 import { VolatilityService } from './provider/volatility.service';
 import { PortfolioAnalyticsService } from './provider/portfolio-analytics.service';
+import type { PortfolioPerformanceResult } from './provider';
 import { BenchmarkService } from './provider/benchmark.service';
 
 @ApiTags('Analytics')
 @Controller('analytics')
-@UseInterceptors(CacheInterceptor) // Apply caching to all routes in this controller
 export class AnalyticsController {
   constructor(
     private readonly analyticsService: AnalyticsService,
@@ -28,7 +28,7 @@ export class AnalyticsController {
   @ApiQuery({ name: 'from', description: 'Start date (ISO 8601)', required: false })
   @ApiQuery({ name: 'to', description: 'End date (ISO 8601)', required: false })
   @ApiQuery({ name: 'granularity', description: 'Time granularity (1h, 1d, 1w, 1m)', enum: ['1h', '1d', '1w', '1m'], required: false, example: '1d' })
-  @CacheTTL(60 * 5) // Cache for 5 minutes
+
   async getTokenPerformance(
     @Param('tokenAddress') tokenAddress: string,
     @Query('from') from?: string,
@@ -45,7 +45,7 @@ export class AnalyticsController {
   @ApiQuery({ name: 'from', description: 'Start date (ISO 8601)', required: false })
   @ApiQuery({ name: 'to', description: 'End date (ISO 8601)', required: false })
   @ApiQuery({ name: 'granularity', description: 'Time granularity (1h, 1d, 1w, 1m)', enum: ['1h', '1d', '1w', '1m'], required: false, example: '1d' })
-  @CacheTTL(60 * 15) // Cache for 15 minutes
+
   async getMarketSentiment(
     @Query('tokenAddress') tokenAddress?: string,
     @Query('source') source?: string,
@@ -61,12 +61,11 @@ export class AnalyticsController {
   @ApiQuery({ name: 'tokenAddress', description: 'The address of the token' })
   @ApiQuery({ name: 'sentimentSource', description: 'Sentiment source (e.g., twitter)', required: true })
   @ApiQuery({ name: 'period', description: 'Correlation period (e.g., 7d, 30d)', required: true, example: '30d' })
-  @CacheTTL(60 * 60) // Cache for 1 hour
-  async getSentimentPriceCorrelation(
+    async getSentimentPriceCorrelation(
     @Query('tokenAddress') tokenAddress: string,
     @Query('sentimentSource') sentimentSource: string,
     @Query('period') period: string,
-  ) {
+  ): Promise<CorrelationResult> {
     return this.correlationService.getSentimentPriceCorrelation(tokenAddress, sentimentSource, period);
   }
 
@@ -74,7 +73,7 @@ export class AnalyticsController {
   @ApiOperation({ summary: 'Get volatility calculations and risk metrics for a token' })
   @ApiParam({ name: 'tokenAddress', description: 'The address of the token' })
   @ApiQuery({ name: 'period', description: 'Calculation period (e.g., 30d, 90d)', required: true, example: '30d' })
-  @CacheTTL(60 * 30) // Cache for 30 minutes
+
   async getVolatilityMetrics(
     @Param('tokenAddress') tokenAddress: string,
     @Query('period') period: string,
@@ -88,13 +87,13 @@ export class AnalyticsController {
   @ApiQuery({ name: 'from', description: 'Start date (ISO 8601)', required: false })
   @ApiQuery({ name: 'to', description: 'End date (ISO 8601)', required: false })
   @ApiQuery({ name: 'granularity', description: 'Time granularity (1h, 1d, 1w, 1m)', enum: ['1h', '1d', '1w', '1m'], required: false, example: '1d' })
-  @CacheTTL(60 * 5) // Cache for 5 minutes (user-specific data)
+
   async getPortfolioAnalytics(
     @Param('userId') userId: string,
     @Query('from') from?: string,
     @Query('to') to?: string,
     @Query('granularity') granularity?: string,
-  ) {
+  ): Promise<PortfolioPerformanceResult> {
     return this.portfolioAnalyticsService.getPortfolioPerformance(userId, from, to, granularity);
   }
 
@@ -103,8 +102,7 @@ export class AnalyticsController {
   @ApiQuery({ name: 'tokenAddress', description: 'Primary token address for comparison' })
   @ApiQuery({ name: 'benchmarkToken', description: 'Benchmark token address or symbol (e.g., BTC, ETH)', required: false })
   @ApiQuery({ name: 'period', description: 'Comparison period (e.g., 7d, 30d, 90d)', required: true, example: '30d' })
-  @CacheTTL(60 * 60) // Cache for 1 hour
-  async getMarketComparison(
+    async getMarketComparison(
     @Query('tokenAddress') tokenAddress: string,
     @Query('benchmarkToken') benchmarkToken?: string,
     @Query('period') period?: string,
