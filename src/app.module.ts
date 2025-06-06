@@ -13,6 +13,8 @@ import { databaseConfig } from '@config/database.config';
 import { redisConfig } from '@config/redis.config';
 import { appConfig } from '@config/app.config';
 import { winstonConfig } from '@config/winston.config';
+import { RiskManagementModule } from './risk-management/risk-management.module';
+
 
 // Modules
 import { AuthModule } from '@modules/auth/auth.module';
@@ -141,6 +143,7 @@ import { AnalyticsModule } from './analytics/analytics.module'; // Added Analyti
     PerformanceTrackingModule,
     VoteModule,
     SentimentModule,
+    RiskManagementModule
     
   ],
   controllers: [AppController, SentimentController],
