@@ -5,7 +5,7 @@ import { PortfolioSnapshot } from '../entities/portfolio-snapshot.entity';
 import { TokenPerformance } from '../entities/token-performance.entity';
 import { AnalyticsCacheService } from './analytics-cache.service';
 
-interface PortfolioPerformanceResult {
+export interface PortfolioPerformanceResult {
   userId: string;
   period: {
     from: string;
@@ -23,7 +23,7 @@ interface PortfolioPerformanceResult {
   calculatedAt: string;
 }
 
-interface PortfolioHolding {
+export interface PortfolioHolding {
   tokenAddress: string;
   tokenSymbol?: string;
   tokenName?: string;
@@ -34,14 +34,14 @@ interface PortfolioHolding {
   priceChange24h?: number; // Percentage
 }
 
-interface PortfolioTimeseriesData {
+export interface PortfolioTimeseriesData {
   timestamp: string;
   value: number;
   deposits?: number;
   withdrawals?: number;
 }
 
-interface PortfolioMetrics {
+export interface PortfolioMetrics {
   sharpeRatio?: number;
   volatility?: number;
   maxDrawdown?: number;

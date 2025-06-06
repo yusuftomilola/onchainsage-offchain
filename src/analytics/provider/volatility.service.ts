@@ -5,7 +5,7 @@ import { VolatilityMetric } from '../entities/volatility-metric.entity';
 import { TokenPerformance } from '../entities/token-performance.entity';
 import { AnalyticsCacheService } from './analytics-cache.service';
 
-interface VolatilityResult {
+export interface VolatilityResult {
   tokenAddress: string;
   period: string;
   timeframe: string;
