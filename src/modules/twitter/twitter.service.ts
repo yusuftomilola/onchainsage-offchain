@@ -1,8 +1,8 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TwitterApi, TweetV2, ApiResponseError} from 'twitter-api-v2';
+import { TwitterApi, TweetV2 } from 'twitter-api-v2';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan, MoreThanOrEqual } from 'typeorm';
+import { Repository, MoreThanOrEqual } from 'typeorm';
 import { PerformanceMetric } from '../../entities/performance-metric.entity';
 import { CommunityPost } from '../../entities/community-post.entity';
 import { InjectQueue } from '@nestjs/bull';
@@ -15,24 +15,13 @@ import {
   TTweetv2UserField,
 } from 'twitter-api-v2';
 
-
-
-interface SearchTweetsOptions {
-  start_time?: string;
-  end_time?: string;
-  'tweet.fields'?: string[];
-  expansions?: TTweetv2Expansion[];
-  'user.fields'?: string[];
-  max_results?: number;
-}
-
 @Injectable()
 export class TwitterService {
   private readonly logger = new Logger(TwitterService.name);
   private readonly client: TwitterApi;
   private readonly tradingKeywords = [
     'crypto', 'bitcoin', 'ethereum', 'trading', 'token', 'blockchain',
-    'defi', 'nft', 'web3', 'altcoin', 'bullish', 'bearish'
+    'defi', 'nft', 'web3', 'altcoin', 'bullish', 'bearish',
   ];
 
   constructor(
@@ -61,7 +50,6 @@ export class TwitterService {
         });
       }
 
-      // Add rules for trading-related keywords
       await this.client.v2.updateStreamRules({
         add: this.tradingKeywords.map(keyword => ({
           value: `${keyword} -is:retweet -is:reply`,
@@ -91,70 +79,53 @@ export class TwitterService {
 
   private async processTweet(tweet: any) {
     try {
-      // Check cache to avoid processing duplicate tweets
       const cacheKey = `tweet:${tweet.data.id}`;
       const cachedTweet = await this.cacheManager.get(cacheKey);
-      if (cachedTweet) {
-        return;
-      }
+      if (cachedTweet) return;
 
-      // Add to processing queue
       await this.tweetQueue.add('process', {
         tweet,
         timestamp: new Date(),
       });
 
-      // Cache the tweet ID
-      await this.cacheManager.set(cacheKey, true, 3600000); // Cache for 1 hour
-
+      await this.cacheManager.set(cacheKey, true, 3600000); // 1 hour
     } catch (error) {
       this.logger.error('Error processing tweet:', error);
     }
   }
 
   async searchTweets(
-  query: string,
-  startTime?: Date,
-  endTime?: Date,
-  maxResults?: number,
-) {
-  try {
-    const options: Partial<{
-      start_time: string;
-      end_time: string;
-      'tweet.fields': TTweetv2TweetField[];
-      expansions: TTweetv2Expansion[];
-      'user.fields': TTweetv2UserField[];
-      max_results: number;
-    }> = {
-      start_time: startTime?.toISOString(),
-      end_time: endTime?.toISOString(),
-      'tweet.fields': [
-        'created_at',
-        'public_metrics',
-        'author_id',
-        'entities',
-      ] as TTweetv2TweetField[],
-      expansions: ['author_id', 'attachments.media_keys'] as TTweetv2Expansion[],
-      'user.fields': [
-        'username',
-        'name',
-        'profile_image_url',
-        'public_metrics',
-      ] as TTweetv2UserField[],
-      max_results: maxResults || 100,
-    };
+    query: string,
+    startTime?: Date,
+    endTime?: Date,
+    maxResults?: number,
+  ) {
+    try {
+      const options: Partial<{
+        start_time: string;
+        end_time: string;
+        'tweet.fields': TTweetv2TweetField[];
+        expansions: TTweetv2Expansion[];
+        'user.fields': TTweetv2UserField[];
+        max_results: number;
+      }> = {
+        start_time: startTime?.toISOString(),
+        end_time: endTime?.toISOString(),
+        'tweet.fields': ['created_at', 'public_metrics', 'author_id', 'entities'],
+        expansions: ['author_id', 'attachments.media_keys'],
+        'user.fields': ['username', 'name', 'profile_image_url', 'public_metrics'],
+        max_results: maxResults || 100,
+      };
 
-    const tweets = await this.client.v2.search(query, options);
-    return tweets;
-  } catch (error) {
-    this.logger.error(
-      `Error searching tweets: ${error instanceof Error ? error.message : 'Unknown error'}`,
-    );
-    throw error;
+      const tweets = await this.client.v2.search(query, options);
+      return tweets;
+    } catch (error) {
+      this.logger.error(
+        `Error searching tweets: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      );
+      throw error;
+    }
   }
-}
-
 
   async searchHistoricalTweets(query: string, startTime: Date, endTime: Date) {
     try {

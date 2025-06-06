@@ -38,6 +38,8 @@ import { SentimentService } from './modules/sentiment/sentiment.service';
 import { SentimentController } from './modules/sentiment/sentiment.controller';
 import { QueueModule } from './queue/queue.module';
 import { DagService } from './workflow/workflow.service';
+import { TwitterModule } from './modules/twitter/twitter.module';
+import { JobModule } from './modules/job/job.module';
 
 import { PriceAggregationModule } from './modules/price-aggregation/price-aggregation.module';
 import { AnalyticsModule } from './analytics/analytics.module'; // Added AnalyticsModule
@@ -144,6 +146,8 @@ import { AnalyticsModule } from './analytics/analytics.module'; // Added Analyti
   controllers: [AppController, SentimentController],
   providers: [AppService, SentimentService],
     QueueModule,
+     TwitterModule,
+    JobModule,
     PriceAggregationModule,
     AnalyticsModule, // Added AnalyticsModule
   ],
